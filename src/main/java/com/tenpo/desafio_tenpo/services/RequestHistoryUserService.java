@@ -31,10 +31,10 @@ public class RequestHistoryUserService {
         RequestHistoryUser requestHistoryUser = new RequestHistoryUser();
 
         requestHistoryUser.setUserId(1L);
-        requestHistoryUser.setUserEmail("dasd");
-        requestHistoryUser.setData("asda");
+        requestHistoryUser.setUserEmail("baco@ss.com");
+        requestHistoryUser.setData("10+10");
         requestHistoryUser.setEndpoint("/test");
-        requestHistoryUser.setDateAt("dsad");
+        requestHistoryUser.setDateAt("20/09/1996");
 
         return requestHistoryUserRepository.save(requestHistoryUser);
     }

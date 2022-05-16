@@ -1,8 +1,6 @@
 package com.tenpo.desafio_tenpo.services;
 
 import com.tenpo.desafio_tenpo.dto.SumDTO;
-import com.tenpo.desafio_tenpo.repository.AuthRepository;
-import com.tenpo.desafio_tenpo.utils.JWTUtil;
 import io.jsonwebtoken.SignatureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

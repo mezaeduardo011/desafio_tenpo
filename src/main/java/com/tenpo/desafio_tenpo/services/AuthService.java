@@ -22,11 +22,14 @@ public class AuthService {
 
     private final AuthRepository authRepository;
 
+    private final RequestHistoryUserService requestHistoryUserService;
+
     private final JWTUtil jwtUtil;
 
-    public AuthService(UserRepository userRepository, AuthRepository authRepository, JWTUtil jwtUtil) {
+    public AuthService(UserRepository userRepository, AuthRepository authRepository, RequestHistoryUserService requestHistoryUserService, JWTUtil jwtUtil) {
         this.userRepository = userRepository;
         this.authRepository = authRepository;
+        this.requestHistoryUserService = requestHistoryUserService;
         this.jwtUtil = jwtUtil;
     }
 
@@ -39,6 +42,7 @@ public class AuthService {
             if(argon2.verify(userData.getPassword(),user.getPassword())){
 
                 String token = jwtUtil.create(String.valueOf(userData.getId()), userData.getEmail());
+                this.requestHistoryUserService.save(token);
 
                 long now = (new Date()).getTime();
 
@@ -61,6 +65,9 @@ public class AuthService {
             }else {
                 throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED,"Incorrect user or password2");
             }
+
+
+
         }catch (NullPointerException e){
             throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED,"Incorrect user or password");
         }
@@ -77,7 +84,9 @@ public class AuthService {
         String token = tokenRequest.split(" ")[1];
 
         Auth authEncontrado = authRepository.findAuthByTokenAndExpirationAfterAndSessionActiveIsTrue(token,date);
+        this.requestHistoryUserService.save(token);
         Map<String,String> response = new HashMap<String,String>();
+
         if (authEncontrado != null){
             authEncontrado.setSessionActive(true);
             authRepository.save(authEncontrado);
