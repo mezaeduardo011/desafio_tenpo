@@ -26,7 +26,16 @@ public class RequestHistoryUserService {
     }
 
 
-    public RequestHistoryUser save(RequestHistoryUser requestHistoryUser) {
+    public RequestHistoryUser save(String token) {
+
+        RequestHistoryUser requestHistoryUser = new RequestHistoryUser();
+
+        requestHistoryUser.setUserId(1L);
+        requestHistoryUser.setUserEmail("dasd");
+        requestHistoryUser.setData("asda");
+        requestHistoryUser.setEndpoint("/test");
+        requestHistoryUser.setDateAt("dsad");
+
         return requestHistoryUserRepository.save(requestHistoryUser);
     }
 

@@ -13,15 +13,11 @@ import java.util.Map;
 
 @Service
 public class SumService {
-    private final JWTUtil jwtUtil;
-
-    private final AuthRepository authRepository;
-
+    private final RequestHistoryUserService requestHistoryUserService;
     private final AuthService authService;
-    public SumService(JWTUtil jwtUtil, AuthRepository authRepository, AuthService authService) {
-        this.jwtUtil = jwtUtil;
-        this.authRepository = authRepository;
+    public SumService(AuthService authService,RequestHistoryUserService requestHistoryUserService) {
         this.authService = authService;
+        this.requestHistoryUserService = requestHistoryUserService;
     }
 
 
@@ -33,6 +29,7 @@ public class SumService {
             Map<String, Object> response = new HashMap<String, Object>();
 
             if(this.authService.validateToken(tokenRequest)){
+                this.requestHistoryUserService.save(tokenRequest);
                 Integer result =  sum.getNum1() + sum.getNum2();
                 response.put("result", result);
             }else{
