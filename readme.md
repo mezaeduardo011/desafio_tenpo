@@ -25,7 +25,7 @@ Tenpo.postman_collection.json file to run the collection.
 
  
 ## GET
-`History GET` localhost:8888/api/history/{page}/{size}
+`History` localhost:8888/api/history/{page}/{size}
 
 ## POST
 `Logout` localhost:8888/api/auth/logout
@@ -100,7 +100,7 @@ ___
 
 
 ## POST  localhost:8888/api/history/{page}/{size}
-`History GET`
+`History`
 
 
 **Response**
