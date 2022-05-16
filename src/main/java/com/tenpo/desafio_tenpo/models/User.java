@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "usuarios")
+@Table(name = "users")
 public class User implements Serializable {
 
     @Id
@@ -24,15 +24,15 @@ public class User implements Serializable {
     @Getter
     @Setter
     @Column(name = "email", unique = true, nullable = false)
-    @Email(message = "El email ingresado no es válido")
+    @Email(message = "invalid email")
     private String email;
 
     @Getter
     @Setter
     @Column(name = "password", nullable = false)
-    @NotBlank(message = "Debe ingresar una contraseña")
+    @NotBlank(message = "Password required")
     @Size(min = 8, max = 200, message
-            = "La contraseña debe tener entre 8 y 200 caracteres")
+            = "Password must have at least 20 characters")
     private String password;
 
 }

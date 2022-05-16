@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name="historial")
+@Table(name="history")
 @Getter @Setter
 public class RequestHistoryUser implements Serializable {
 

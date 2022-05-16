@@ -24,7 +24,7 @@ public class RequestHistoryUserController {
     }
 
     @PostMapping
-    public ResponseEntity<RequestHistoryUser> createUser(@RequestBody RequestHistoryUser requestHistoryUser) {
+    public ResponseEntity<RequestHistoryUser> create(@RequestBody RequestHistoryUser requestHistoryUser) {
         return ResponseEntity.status(HttpStatus.CREATED).body( this.requestHistoryUserService.save(requestHistoryUser));
     }
     @GetMapping("/{page}/{size}")

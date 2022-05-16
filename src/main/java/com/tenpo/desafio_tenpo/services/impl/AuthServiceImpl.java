@@ -54,7 +54,7 @@ public class AuthServiceImpl implements AuthService {
 
         }else {
 
-            return "Contraseña incorrecta para el usuario con id"+ userData.getId();
+            return "Incorrect user or password";
 
         }
 
