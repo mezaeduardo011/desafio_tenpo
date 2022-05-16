@@ -1,15 +1,13 @@
 package com.tenpo.desafio_tenpo.services;
 
 import com.tenpo.desafio_tenpo.dto.SumDTO;
-import com.tenpo.desafio_tenpo.models.Auth;
 import com.tenpo.desafio_tenpo.repository.AuthRepository;
 import com.tenpo.desafio_tenpo.utils.JWTUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.jsonwebtoken.SignatureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,33 +17,38 @@ public class SumService {
 
     private final AuthRepository authRepository;
 
-    public SumService(JWTUtil jwtUtil, AuthRepository authRepository) {
+    private final AuthService authService;
+    public SumService(JWTUtil jwtUtil, AuthRepository authRepository, AuthService authService) {
         this.jwtUtil = jwtUtil;
         this.authRepository = authRepository;
+        this.authService = authService;
     }
 
 
     public Map suma(String tokenRequest, SumDTO sum){
+
+
         try{
-            String token = tokenRequest.split(" ")[1];
-            jwtUtil.getKey(token);
 
-            long now = (new Date()).getTime();
-            Date date = new Date(now);
+            Map<String, Object> response = new HashMap<String, Object>();
 
-            Auth authEncontrado = authRepository.findAuthByTokenAndExpirationAfterAndSessionActiveIsTrue(token,date);
-
-            if (authEncontrado.getUserId() != null){
+            if(this.authService.validateToken(tokenRequest)){
                 Integer result =  sum.getNum1() + sum.getNum2();
-                Map<String, Object> response = new HashMap<String, Object>();
                 response.put("result", result);
-                return response;
-            }else {
-                throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
+            }else{
+                response.put("result", "Invalid Token");
             }
+
+            return response;
+
         }catch (NullPointerException e){
             throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
+        }catch (SignatureException e){
+            throw new SignatureException("Unknown token");
         }
+
+
     }
+
 }
 

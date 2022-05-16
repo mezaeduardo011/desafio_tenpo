@@ -81,15 +81,32 @@ public class AuthService {
         if (authEncontrado != null){
             authEncontrado.setSessionActive(true);
             authRepository.save(authEncontrado);
-            response.put("message","logout successfully");
+            response.put("message","Logout successfully");
             return response;
 
         }else {
-            response.put("message","logout  unsuccessful");
+            response.put("message","Logout  unsuccessful. ");
             return response;
         }
 
 
     }
 
+    public Boolean validateToken(String tokenRequest){
+
+        String token = tokenRequest.split(" ")[1];
+        jwtUtil.getKey(token);
+
+        long now = (new Date()).getTime();
+        Date date = new Date(now);
+
+        Auth authEncontrado = authRepository.findAuthByTokenAndExpirationAfterAndSessionActiveIsTrue(token,date);
+
+        if (authEncontrado.getUserId() != null){
+            return true;
+        }else {
+            return false;
+        }
+
+    }
 }

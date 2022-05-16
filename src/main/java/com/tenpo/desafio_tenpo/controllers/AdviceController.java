@@ -1,6 +1,7 @@
 package com.tenpo.desafio_tenpo.controllers;
 
 import com.tenpo.desafio_tenpo.dto.ErrorAdviceDTO;
+import io.jsonwebtoken.SignatureException;
 import org.postgresql.util.PSQLException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,5 +58,9 @@ public class AdviceController {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
-
+    @ExceptionHandler(value = SignatureException.class)
+    public ResponseEntity<ErrorAdviceDTO> SignatureExceptionHandler(SignatureException ex){
+        ErrorAdviceDTO errorResponse = ErrorAdviceDTO.builder().code("400").message(ex.getMessage()).build();
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
 }

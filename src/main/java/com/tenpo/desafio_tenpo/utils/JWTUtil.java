@@ -1,9 +1,6 @@
 package com.tenpo.desafio_tenpo.utils;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -86,12 +83,12 @@ public class JWTUtil {
      * @return
      */
     public String getKey(String jwt) {
-        // This line will throw an exception if it is not a signed JWS (as
-        // expected)
-        Claims claims = Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(key))
-                .parseClaimsJws(jwt).getBody();
-
-
-        return claims.getId();
+            try {
+                Claims claims = Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(key))
+                        .parseClaimsJws(jwt).getBody();
+                return claims.getId();
+            }catch (SignatureException e){
+                throw new SignatureException("Unknown token");
+            }
     }
 }

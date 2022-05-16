@@ -29,14 +29,15 @@ public class UserService {
                 String hash = argon2.hash(1, 1024, 1, user.getPassword());
                 user.setPassword(hash);
             }
+
             User userResponse = userRepository.save(user);
 
             Map<String, Object> response = new HashMap<String, Object>();
 
             if(userResponse != null){
-                response.put("result", "create successfully");
+                response.put("result", "Create successfully");
             }else {
-                response.put("result", "create unsuccessful");
+                response.put("result", "Create unsuccessful");
             }
 
             return response;
