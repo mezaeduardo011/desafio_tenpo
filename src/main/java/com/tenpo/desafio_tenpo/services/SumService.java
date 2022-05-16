@@ -21,7 +21,7 @@ public class SumService {
 
 
     public Integer suma(String token, SumDTO sum){
-
+        try{
             jwtUtil.getKey(token);
 
             long now = (new Date()).getTime();
@@ -34,7 +34,9 @@ public class SumService {
             }else {
                 throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
             }
-
+        }catch (NullPointerException e){
+            throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
+        }
     }
 }
 

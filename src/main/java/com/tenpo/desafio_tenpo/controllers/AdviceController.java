@@ -38,8 +38,8 @@ public class AdviceController {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(value = HttpClientErrorException.Unauthorized.class)
-    public ResponseEntity<ErrorAdviceDTO> runtimeExceptionHandler(HttpClientErrorException.Unauthorized ex){
+    @ExceptionHandler(value = HttpClientErrorException.class)
+    public ResponseEntity<ErrorAdviceDTO> runtimeExceptionHandler(HttpClientErrorException ex){
         ErrorAdviceDTO errorResponse = ErrorAdviceDTO.builder().code("401").message(ex.getMessage()).build();
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
@@ -49,8 +49,6 @@ public class AdviceController {
         ErrorAdviceDTO errorResponse = ErrorAdviceDTO.builder().code("400").message(ex.getMessage()).build();
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
-
-
 
 
 

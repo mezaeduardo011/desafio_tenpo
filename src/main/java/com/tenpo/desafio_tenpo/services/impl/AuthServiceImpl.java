@@ -9,7 +9,9 @@ import com.tenpo.desafio_tenpo.utils.JWTUtil;
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.Date;
 
@@ -28,35 +30,37 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String login(User user) {
+        try{
+            User userData = userRepository.findUserByEmail(user.getEmail());
 
-        User userData = userRepository.findUserByEmail(user.getEmail());
+            Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
 
-        Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
+            if(argon2.verify(userData.getPassword(),user.getPassword())){
 
-        if(argon2.verify(userData.getPassword(),user.getPassword())){
+                String token = jwtUtil.create(String.valueOf(userData.getId()), userData.getEmail());
 
-            String token = jwtUtil.create(String.valueOf(userData.getId()), userData.getEmail());
+                long now = (new Date()).getTime();
 
-            long now = (new Date()).getTime();
+                Date expiration;
+                expiration = new Date(now + 50000);
 
-            Date expiration;
-            expiration = new Date(now + 50000);
-
-            Auth auth = new Auth();
-            auth.setToken(token);
-            auth.setSessionActive(true);
-            auth.setUserId(userData.getId());
-            auth.setExpiration(expiration);
-            authRepository.save(auth);
+                Auth auth = new Auth();
+                auth.setToken(token);
+                auth.setSessionActive(true);
+                auth.setUserId(userData.getId());
+                auth.setExpiration(expiration);
+                authRepository.save(auth);
 
 
-            return token;
+                return token;
 
-        }else {
-
-            return "Incorrect user or password";
-
+            }else {
+                return "Incorrect user or password";
+            }
+        }catch (NullPointerException e){
+            throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED,"Incorrect user or password");
         }
+
 
     }
 
