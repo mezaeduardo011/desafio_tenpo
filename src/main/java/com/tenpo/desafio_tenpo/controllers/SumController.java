@@ -20,7 +20,7 @@ public class SumController {
 
     @PostMapping
     public ResponseEntity<Object> sum(@RequestBody SumDTO sum, @RequestHeader(value="Authorization") String tokenRequest, WebRequest request)  {
-            return ResponseEntity.status(HttpStatus.FOUND).body( this.sumService.suma(tokenRequest,request,sum));
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body( this.sumService.suma(tokenRequest,request,sum));
     }
 }
 

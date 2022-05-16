@@ -23,9 +23,7 @@ Tenpo.postman_collection.json file to run the collection.
 ## POST
 `Sum` localhost:8888/api/suma
 
-## POST
-`History POST` localhost:8888/api/history
-
+ 
 ## GET
 `History GET` localhost:8888/api/history/{page}/{size}
 
@@ -99,34 +97,7 @@ ___
 }
 ```
 ___
-## POST localhost:8888/api/history
-`History POST`
 
-
-**Parameters**
-
-| Name        | Required |  Type   |
-|:------------|:--------:|:-------:|
-| `userEmail` | required | String  |
-| `userId`    | required | Integer |
-| `dateAt`    | required | String  |
-| `endpoint`  | required | String  |
-| `data`      | required | String  |
-
-**Response**
-
-```
-{
-    "id": 1,
-    "userEmail": "user@test.com",
-    "userId": 1,
-    "dateAt": "15/05/2022",
-    "endpoint": "localhost:8888/api/suma",
-    "data": "10 + 10"
-}
-
-```
-___
 
 ## POST  localhost:8888/api/history/{page}/{size}
 `History GET`
@@ -139,19 +110,24 @@ ___
 [
     {
         "id": 1,
-        "userEmail": "user@test.com",
-        "userId": 5,
-        "dateAt": "15/05/2022",
-        "endpoint": "localhost:8888/api/suma",
-        "data": "10 + 10"
+        "userEmail": "user1@test.com",
+        "userId": 1,
+        "dateAt": "16-05-2022 09:05:24",
+        "endpoint": "ServletWebRequest: uri=/api/auth/login;client=172.19.0.1"
     },
     {
         "id": 2,
-        "userEmail": "user@test.com",
+        "userEmail": "user1@test.com",
         "userId": 1,
-        "dateAt": "15/05/2022",
-        "endpoint": "localhost:8888/api/suma",
-        "data": "10 + 12"
+        "dateAt": "16-05-2022 09:05:30",
+        "endpoint": "ServletWebRequest: uri=/api/suma;client=172.19.0.1"
+    },
+    {
+        "id": 3,
+        "userEmail": "user1@test.com",
+        "userId": 1,
+        "dateAt": "16-05-2022 09:05:33",
+        "endpoint": "ServletWebRequest: uri=/api/auth/logout;client=172.19.0.1"
     }
 ]
 

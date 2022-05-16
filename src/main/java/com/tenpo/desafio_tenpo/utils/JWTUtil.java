@@ -70,10 +70,13 @@ public class JWTUtil {
     public String getValue(String token) {
 
         try {
-            String jwt = token.split(" ")[1];
+
+            if(token.contains(" ")){
+                token = token.split(" ")[1];
+            }
 
             Claims claims = Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(key))
-                    .parseClaimsJws(jwt).getBody();
+                    .parseClaimsJws(token).getBody();
 
             return claims.getSubject();
         }catch (SignatureException e){
@@ -89,10 +92,13 @@ public class JWTUtil {
      */
     public String getKey(String token) {
             try {
-                String jwt = token.split(" ")[1];
+
+                if(token.contains(" ")){
+                    token = token.split(" ")[1];
+                }
 
                 Claims claims = Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(key))
-                        .parseClaimsJws(jwt).getBody();
+                        .parseClaimsJws(token).getBody();
                 return claims.getId();
             }catch (SignatureException e){
                 throw new SignatureException("Unknown token");

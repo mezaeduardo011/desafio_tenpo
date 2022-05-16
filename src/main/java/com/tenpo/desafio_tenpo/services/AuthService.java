@@ -11,6 +11,7 @@ import io.jsonwebtoken.SignatureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.context.request.WebRequest;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -34,7 +35,7 @@ public class AuthService {
         this.jwtUtil = jwtUtil;
     }
 
-    public Map login(User user) {
+    public Map login(User user, WebRequest request) {
         try{
             User userData = userRepository.findUserByEmail(user.getEmail());
 
@@ -43,7 +44,7 @@ public class AuthService {
             if(argon2.verify(userData.getPassword(),user.getPassword())){
 
                 String token = jwtUtil.create(String.valueOf(userData.getId()), userData.getEmail());
-                this.requestHistoryUserService.save(token);
+                this.requestHistoryUserService.save(token,request);
 
                 long now = (new Date()).getTime();
 
@@ -78,7 +79,7 @@ public class AuthService {
     }
 
 
-    public Map logout(String tokenRequest) {
+    public Map logout(String tokenRequest, WebRequest request) {
 
 
         long now = (new Date()).getTime();
@@ -86,11 +87,11 @@ public class AuthService {
         String token = tokenRequest.split(" ")[1];
 
         Auth authEncontrado = authRepository.findAuthByTokenAndExpirationAfterAndSessionActiveIsTrue(token,date);
-        this.requestHistoryUserService.save(token);
+        this.requestHistoryUserService.save(token,request);
         Map<String,String> response = new HashMap<String,String>();
 
         if (authEncontrado != null){
-            authEncontrado.setSessionActive(true);
+            authEncontrado.setSessionActive(false);
             authRepository.save(authEncontrado);
             response.put("message","Logout successfully");
             return response;

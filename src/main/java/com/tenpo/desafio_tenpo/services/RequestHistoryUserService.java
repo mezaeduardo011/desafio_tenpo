@@ -37,7 +37,7 @@ public class RequestHistoryUserService {
         RequestHistoryUser requestHistoryUser = new RequestHistoryUser();
 
 
-        String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+        String date = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss").format(new Date());
 
         Long userId = Long.parseLong(this.jwtUtil.getKey(token));
         requestHistoryUser.setUserId(userId);
