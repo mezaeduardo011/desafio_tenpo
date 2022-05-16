@@ -28,7 +28,5 @@ public class RequestHistoryUser implements Serializable {
     @Column(name = "endpoint")
     private String endpoint;
 
-    @Column(name = "data")
-    private String data;
 
 }
