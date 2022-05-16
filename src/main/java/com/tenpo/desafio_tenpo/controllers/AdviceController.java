@@ -1,6 +1,7 @@
 package com.tenpo.desafio_tenpo.controllers;
 
 import com.tenpo.desafio_tenpo.dto.ErrorAdviceDTO;
+import org.postgresql.util.PSQLException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MissingRequestHeaderException;
@@ -17,19 +18,19 @@ import java.util.List;
 public class AdviceController {
 
     @ExceptionHandler(value = IllegalArgumentException.class)
-    public ResponseEntity<ErrorAdviceDTO> illegalArgumentHandler(IllegalArgumentException ex){
+    public ResponseEntity<ErrorAdviceDTO> IllegalArgumentExceptionHandler(IllegalArgumentException ex){
         ErrorAdviceDTO error = ErrorAdviceDTO.builder().code("400").message(ex.getMessage()).build();
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = MissingRequestHeaderException.class)
-    public ResponseEntity<ErrorAdviceDTO> missingRequestHeaderExceptionHandler(MissingRequestHeaderException ex){
+    public ResponseEntity<ErrorAdviceDTO> MissingRequestHeaderExceptionHandler(MissingRequestHeaderException ex){
         ErrorAdviceDTO error = ErrorAdviceDTO.builder().code("400").message(ex.getMessage()).build();
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = ConstraintViolationException.class)
-    public ResponseEntity<ErrorAdviceDTO> runtimeExceptionHandler(ConstraintViolationException ex){
+    public ResponseEntity<ErrorAdviceDTO> ConstraintViolationExceptionHandler(ConstraintViolationException ex){
 
         List<String> listError = new ArrayList<>();
         ex.getConstraintViolations().forEach(error ->listError.add(error.getMessage()) );
@@ -39,18 +40,22 @@ public class AdviceController {
     }
 
     @ExceptionHandler(value = HttpClientErrorException.class)
-    public ResponseEntity<ErrorAdviceDTO> runtimeExceptionHandler(HttpClientErrorException ex){
+    public ResponseEntity<ErrorAdviceDTO> HttpClientErrorExceptionHandler(HttpClientErrorException ex){
         ErrorAdviceDTO errorResponse = ErrorAdviceDTO.builder().code("401").message(ex.getMessage()).build();
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(value = SQLIntegrityConstraintViolationException.class)
-    public ResponseEntity<ErrorAdviceDTO> runtimeExceptionHandler(SQLIntegrityConstraintViolationException ex){
+    public ResponseEntity<ErrorAdviceDTO> SQLIntegrityConstraintViolationExceptionHandler(SQLIntegrityConstraintViolationException ex){
         ErrorAdviceDTO errorResponse = ErrorAdviceDTO.builder().code("400").message(ex.getMessage()).build();
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
-
+    @ExceptionHandler(value = PSQLException.class)
+    public ResponseEntity<ErrorAdviceDTO> PSQLExceptionHandler(PSQLException ex){
+        ErrorAdviceDTO errorResponse = ErrorAdviceDTO.builder().code("400").message(ex.getMessage()).build();
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
 
 
 }

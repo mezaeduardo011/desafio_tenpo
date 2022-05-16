@@ -18,9 +18,8 @@ public class SumController {
     }
 
     @PostMapping
-    public ResponseEntity<Integer> sum(@RequestBody SumDTO sum, @RequestHeader(value="Authorization") String tokenRequest)  {
-            String token = tokenRequest.split(" ")[1];
-            return ResponseEntity.status(HttpStatus.CREATED).body( this.sumService.suma(token,sum));
+    public ResponseEntity<Object> sum(@RequestBody SumDTO sum, @RequestHeader(value="Authorization") String tokenRequest)  {
+            return ResponseEntity.status(HttpStatus.FOUND).body( this.sumService.suma(tokenRequest,sum));
     }
 }
 

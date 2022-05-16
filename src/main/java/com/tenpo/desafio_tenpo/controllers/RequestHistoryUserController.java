@@ -29,11 +29,8 @@ public class RequestHistoryUserController {
     }
     @GetMapping("/{page}/{size}")
     public List<RequestHistoryUser> readAll(@PathVariable(value = "page") Integer page, @PathVariable(value = "size") Integer size){
-
-        Pageable pageObj = PageRequest.of(page, size);
-
         return StreamSupport
-                .stream(this.requestHistoryUserService.findAll(pageObj).spliterator(),false )
+                .stream(this.requestHistoryUserService.findAll(page,size).spliterator(),false )
                 .collect(Collectors.toList());
     }
 }

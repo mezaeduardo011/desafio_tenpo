@@ -10,18 +10,24 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class SumService {
-    @Autowired
-    private JWTUtil jwtUtil;
+    private final JWTUtil jwtUtil;
 
-    @Autowired
-    private AuthRepository authRepository;
+    private final AuthRepository authRepository;
+
+    public SumService(JWTUtil jwtUtil, AuthRepository authRepository) {
+        this.jwtUtil = jwtUtil;
+        this.authRepository = authRepository;
+    }
 
 
-    public Integer suma(String token, SumDTO sum){
+    public Map suma(String tokenRequest, SumDTO sum){
         try{
+            String token = tokenRequest.split(" ")[1];
             jwtUtil.getKey(token);
 
             long now = (new Date()).getTime();
@@ -30,7 +36,10 @@ public class SumService {
             Auth authEncontrado = authRepository.findAuthByTokenAndExpirationAfterAndSessionActiveIsTrue(token,date);
 
             if (authEncontrado.getUserId() != null){
-                return sum.getNum1() + sum.getNum2();
+                Integer result =  sum.getNum1() + sum.getNum2();
+                Map<String, Object> response = new HashMap<String, Object>();
+                response.put("result", result);
+                return response;
             }else {
                 throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
             }

@@ -16,16 +16,13 @@ public class AuthController {
         this.authService = authService;
     }
 
-
-
-
     @PostMapping("/login")
-    public ResponseEntity<String> createUser(@RequestBody User user) {
+    public ResponseEntity<Object> createUser(@RequestBody User user) {
         return ResponseEntity.status(HttpStatus.CREATED).body( authService.login(user));
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<String> logout( @RequestHeader(value="Authorization") String token){
+    public ResponseEntity<Object> logout( @RequestHeader(value="Authorization") String token){
         return ResponseEntity.status(HttpStatus.CREATED).body( authService.logout(token) );
     }
 
