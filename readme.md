@@ -1,121 +1,134 @@
 # API Tenpo
 
-## POST
-`Sign Up` [localhost:8080/api/users]()
+
+## Run the app (Default Port 8888)
+
+---
+Start up your application by running docker-compose at the root of the project:
+
+
+    $ docker-compose up 
+
+
+Tenpo.postman_collection.json file to run the collection. 
+
+---
 
 ## POST
-`Login` [localhost:8080/api/auth/login]()
+`Sign Up` localhost:8888/api/users
 
 ## POST
-`Sum` [localhost:8080/api/suma]()
+`Login` localhost:8888/api/auth/login
 
 ## POST
-`History POST` [localhost:8080/api/history]()
+`Sum` localhost:8888/api/suma
+
+## POST
+`History POST` localhost:8888/api/history
 
 ## GET
-`History GET` [localhost:8080/api/history/{page}/{size}]()
+`History GET` localhost:8888/api/history/{page}/{size}
 
 ## POST
-`Logout` [localhost:8080/api/auth/logout]()
-___
+`Logout` localhost:8888/api/auth/logout
 
-## POST localhost:8080/api/users
+---
+## POST localhost:8888/api/users
 `Sign Up`
 
 
 
 **Parameters**
 
-|          Name | Required |  Type|                                                                                                                                                            |
-| -------------:|:--------:|:-------:|-
-|     `email` | required | string|                                                          |
-|     `password` | required | string|                                                              |
+| Name       | Required | Type    |
+|:-----------|:--------:|:--------|
+| `email`    | required | String  |
+| `password` | required | String |
 
--
 **Response**
 
 ```
 {
-    "id": 1,
-    "email": "user@test.com",
-    "password": "$argon2id$v=19$m=1024,t=1,p=1$1rxPSU0ij2MU5K1u/tmJUQ$0d42ClOBrpOPNozz5kp7fou+jsqQ7VI2/buDi4lyoqg"
+    "result": "Create successfully"
 }
 
 ```
 ___
 
-## POST localhost:8080/api/auth/login
+## POST localhost:8888/api/auth/login
 `Login`
 
 
 **Parameters**
 
-|          Name | Required |  Type   ||
-| -------------:|:--------:|:-------:| --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-|     `email` | required | string  | |
-|     `password` | required | string ||
+| Name   | Required | Type    |
+|:-------|:--------:|:--------|
+| `email` | required | String |
+| `password` | required | String |
 
--
 **Response**
 
 ```
-
-eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxIiwiaWF0IjoxNjUyNjY0MzEyLCJzdWIiOiJ1c2VyQHRlc3QuY29tIiwiaXNzIjoiTWFpbiIsImV4cCI6MTY1MzI2OTExMn0.wZU_r1VQPbLI0tpUKTtC9egbNCc-P8RIS-Rx1NOr1CY
-
+{
+    "token": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyIiwiaWF0IjoxNjUyNzI1OTU4LCJzdWIiOiJ1c2VyQHRlc3QuY29tIiwiaXNzIjoiTWFpbiIsImV4cCI6MTY1MzMzMDc1OH0.VOBrdfOjaakYewccWAH4TpSF_VsbALQFCt6is_zGNjo"
+}
 ```
 ___
-## POST localhost:8080/api/suma
+## POST  localhost:8888/api/suma
 `Sum`
+
+` Header required : Type Authorization Bearer Token`
+
+        Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ
+
 
 
 
 **Parameters**
 
-|          Name | Required |  Type   |                                                                                                                                                          |
-| -------------:|:--------:|:-------:| --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-|     `num1` | required | integer  | |
-|     `num2` | required | integer  | |
+|   Name | Required | Type    |
+|-------:|:--------:|:--------|
+| `num1` | required | Integer |
+| `num2` | required | Integer |
 
--
 **Response**
 
 ```
-20
-
+{
+    "result": 22
+}
 ```
 ___
-## POST localhost:8080/api/history
+## POST localhost:8888/api/history
 `History POST`
 
 
 **Parameters**
 
-|          Name | Required |  Type   |     -                                                                                                                                                |
-| -------------:|:--------:|:-------:| --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-|     `user_email` | required | string| -
-|     `user_id` | required | integer| -
-|     `fecha_creacion` | required | string| -
-|     `endpoint` | required | string| -
-|     `data` | required | string| -
+| Name        | Required |  Type   |
+|:------------|:--------:|:-------:|
+| `userEmail` | required | String  |
+| `userId`    | required | Integer |
+| `dateAt`    | required | String  |
+| `endpoint`  | required | String  |
+| `data`      | required | String  |
 
--
 **Response**
 
 ```
-
 {
-    "id": 2,
-    "user_email": "user@test.com",
-    "user_id": 1,
-    "fecha_creacion": "15/05/2022",
-    "endpoint": "localhost:8080/api/suma",
+    "id": 1,
+    "userEmail": "user@test.com",
+    "userId": 1,
+    "dateAt": "15/05/2022",
+    "endpoint": "localhost:8888/api/suma",
     "data": "10 + 10"
 }
 
 ```
 ___
 
-## POST localhost:8080/api/history/{page}/{size}
+## POST  localhost:8888/api/history/{page}/{size}
 `History GET`
 
 
@@ -126,37 +139,39 @@ ___
 [
     {
         "id": 1,
-        "user_email": "",
-        "user_id": 0,
-        "fecha_creacion": "",
-        "endpoint": "",
-        "data": ""
+        "userEmail": "user@test.com",
+        "userId": 5,
+        "dateAt": "15/05/2022",
+        "endpoint": "localhost:8888/api/suma",
+        "data": "10 + 10"
     },
     {
         "id": 2,
-        "user_email": "user@test.com",
-        "user_id": 1,
-        "fecha_creacion": "15/05/2022",
-        "endpoint": "localhost:8080/api/suma",
-        "data": "10 + 10"
+        "userEmail": "user@test.com",
+        "userId": 1,
+        "dateAt": "15/05/2022",
+        "endpoint": "localhost:8888/api/suma",
+        "data": "10 + 12"
     }
 ]
 
 ```
 ___
-## POST localhost:8080/api/auth/logout
+## POST localhost:8888/api/auth/logout
 `Logout`
 
 
+` Header required : Type Authorization Bearer Token`
 
--
+        Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ
+
+
 
 **Response**
 
 ```
-
 {
-    True
+    "message": "Logout successfully"
 }
 
 ```
