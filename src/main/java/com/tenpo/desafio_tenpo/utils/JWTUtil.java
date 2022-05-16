@@ -67,13 +67,18 @@ public class JWTUtil {
      * @param jwt
      * @return
      */
-    public String getValue(String jwt) {
-        // This line will throw an exception if it is not a signed JWS (as
-        // expected)
-        Claims claims = Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(key))
-                .parseClaimsJws(jwt).getBody();
+    public String getValue(String token) {
 
-        return claims.getSubject();
+        try {
+            String jwt = token.split(" ")[1];
+
+            Claims claims = Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(key))
+                    .parseClaimsJws(jwt).getBody();
+
+            return claims.getSubject();
+        }catch (SignatureException e){
+            throw new SignatureException("Unknown token");
+        }
     }
 
     /**
@@ -82,8 +87,10 @@ public class JWTUtil {
      * @param jwt
      * @return
      */
-    public String getKey(String jwt) {
+    public String getKey(String token) {
             try {
+                String jwt = token.split(" ")[1];
+
                 Claims claims = Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(key))
                         .parseClaimsJws(jwt).getBody();
                 return claims.getId();

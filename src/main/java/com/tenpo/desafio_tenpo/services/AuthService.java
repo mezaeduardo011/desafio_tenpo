@@ -7,6 +7,7 @@ import com.tenpo.desafio_tenpo.repository.UserRepository;
 import com.tenpo.desafio_tenpo.utils.JWTUtil;
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
+import io.jsonwebtoken.SignatureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -72,6 +73,7 @@ public class AuthService {
 
     public Map logout(String tokenRequest) {
 
+
         long now = (new Date()).getTime();
         Date date = new Date(now);
         String token = tokenRequest.split(" ")[1];
@@ -93,19 +95,23 @@ public class AuthService {
     }
 
     public Boolean validateToken(String tokenRequest){
+        try{
+            jwtUtil.getKey(tokenRequest);
 
-        String token = tokenRequest.split(" ")[1];
-        jwtUtil.getKey(token);
+            long now = (new Date()).getTime();
+            Date date = new Date(now);
+            String token = tokenRequest.split(" ")[1];
+            Auth authEncontrado = authRepository.findAuthByTokenAndExpirationAfterAndSessionActiveIsTrue(token,date);
 
-        long now = (new Date()).getTime();
-        Date date = new Date(now);
-
-        Auth authEncontrado = authRepository.findAuthByTokenAndExpirationAfterAndSessionActiveIsTrue(token,date);
-
-        if (authEncontrado.getUserId() != null){
-            return true;
-        }else {
-            return false;
+            if (authEncontrado.getUserId() != null){
+                return true;
+            }else {
+                return false;
+            }
+        }catch (NullPointerException e){
+            throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
+        }catch (SignatureException e){
+            throw new SignatureException("Unknown token");
         }
 
     }

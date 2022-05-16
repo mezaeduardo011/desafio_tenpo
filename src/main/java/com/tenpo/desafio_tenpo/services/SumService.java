@@ -7,6 +7,7 @@ import io.jsonwebtoken.SignatureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.context.request.WebRequest;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,15 +22,14 @@ public class SumService {
     }
 
 
-    public Map suma(String tokenRequest, SumDTO sum){
-
+    public Map suma(String tokenRequest, WebRequest request, SumDTO sum){
 
         try{
 
             Map<String, Object> response = new HashMap<String, Object>();
 
-            if(this.authService.validateToken(tokenRequest)){
-                this.requestHistoryUserService.save(tokenRequest);
+            if(Boolean.TRUE.equals(this.authService.validateToken(tokenRequest))){
+                this.requestHistoryUserService.save(tokenRequest,request);
                 Integer result =  sum.getNum1() + sum.getNum2();
                 response.put("result", result);
             }else{
